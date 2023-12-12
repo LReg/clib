@@ -49,15 +49,16 @@ typedef struct ParsedInts {
 ParsedInts parseInts(char * line, size_t maxNumbers) {
     int * nums = malloc(sizeof(int) * maxNumbers);
     int * numPos = nums;
+    size_t len = 0;
     while(*line != '\n' || *line != '\0') {
         line = skipNonDigits(line);
         if (*line == '\n' || *line == '\0')
             break;
         *numPos++ = atoi(line);
+        len++;
         line = skipDecimals(skipOperator(line));
     }
-    size_t len = numPos - nums;
-    nums = realloc(nums, len);
+    nums = realloc(nums, sizeof(int) * len);
     ParsedInts ret = { nums, len };
     return ret;
 }
